@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+ <html>
+    <head>
+        <meta charset="utf-8">
+        <title>电阻式传感器阵列数据采集显示系统</title>
+        <script src="./js/echarts.js"></script>
+        <script src="./js/echarts-gl.min.js"></script>
+    </head>
+
+    <body onload="buildBar()">
+        <h3 style="font-size:30; background:gray"><center>Real-time data display</center></h3>
+        <table border="2" align="center">
+            <col width="100dp"，>
+            <col width="100dp">
+            <col width="100dp">
+            <col width="100dp">
+            <col width="100dp">
+            <tr>
+                <th><label id='l00'>0</label></th>
+                <th><label id='l01'>0</label></th>
+                <th><label id='l02'>0</label></th>
+                <th><label id='l03'>0</label></th>
+                <th><label id='l04'>0</label></th>
+            </tr>
+            <tr>
+                <th><label id='l10'>0</label></th>
+                <th><label id='l11'>0</label></th>
+                <th><label id='l12'>0</label></th>
+                <th><label id='l13'>0</label></th>
+                <th><label id='l14'>0</label></th>
+            </tr>
+            <tr>
+                <th><label id='l20'>0</label></th>
+                <th><label id='l21'>0</label></th>
+                <th><label id='l22'>0</label></th>
+                <th><label id='l23'>0</label></th>
+                <th><label id='l24'>0</label></th>
+            </tr>
+            <tr>
+                <th><label id='l30'>0</label></th>
+                <th><label id='l31'>0</label></th>
+                <th><label id='l32'>0</label></th>
+                <th><label id='l33'>0</label></th>
+                <th><label id='l34'>0</label></th>
+            </tr>
+            <tr>
+                <th><label id='l40'>0</label></th>
+                <th><label id='l41'>0</label></th>
+                <th><label id='l42'>0</label></th>
+                <th><label id='l43'>0</label></th>
+                <th><label id='l44'>0</label></th>
+            </tr>
+        </table>
+        <h3 style="background: gray"><center>3d barchart display</center></h3>
+        <div id="main" style="width: 400px;height:400px;"></div>
+        <script type="text/javascript" >
+            var chart = echarts.init(document.getElementById('main')); //全局变量
+            var cols = ['col 1', 'col 2', 'col 3', 'col 4', 'col 5'];
+            var rows = ['row 1', 'row 2', 'row 3', 'row 4', 'row 5'];
+            var data = [[0,0,0], [0,1,0], [0,2,0], [0,3,0], [0,4,0],
+                        [1,0,0], [1,1,0], [1,2,0], [1,3,0], [1,4,0],
+                        [2,0,0], [2,1,0], [2,2,0], [2,3,0], [2,4,0],
+                        [3,0,0], [3,1,0], [3,2,0], [3,3,0], [3,4,0],
+                        [4,0,0], [4,1,0], [4,2,0], [4,3,0], [4,4,0]];
+            var option = {
+                tooltip: {},
+                grid3D: {
+                    boxWidth: 80,
+                    boxDepth: 50,
+                    viewControl: {
+                     // projection: 'orthographic'
+                    },
+                    light: {
+                        main: {
+                            intensity: 1.2,
+                        },
+                        ambient: {
+                            intensity: 0.3
+                        }
+                    }
+                },
+                xAxis3D: {type: 'category', data: cols},
+                yAxis3D: {type: 'category', data: rows},
+                zAxis3D: {type: 'value', max:2, min: 0},
+                series: [{
+                    type: 'bar3D',
+                    symbolSize: 50,
+                    data: data.map(function (item) {
+                        return {
+                            value: [item[0], item[1], item[2]]
+                        };
+                    }),
+                    itemStyle: {
+                        opacity: 0.4
+                    },
+                    shading: 'color',
+                }]
+            }
+
+            function buildBar(){
+                chart.setOption(option);
+            }
+
+            function reformData(a){
+                document.getElementById("l00").innerHTML = a[0];
+                document.getElementById("l01").innerHTML = a[5];
+                document.getElementById("l02").innerHTML = a[10];
+                document.getElementById("l03").innerHTML = a[15];
+                document.getElementById("l04").innerHTML = a[20];
+                document.getElementById("l10").innerHTML = a[1];
+                document.getElementById("l11").innerHTML = a[6];
+                document.getElementById("l12").innerHTML = a[11];
+                document.getElementById("l13").innerHTML = a[16];
+                document.getElementById("l14").innerHTML = a[21];
+                document.getElementById("l20").innerHTML = a[2];
+                document.getElementById("l21").innerHTML = a[7];
+                document.getElementById("l22").innerHTML = a[12];
+                document.getElementById("l23").innerHTML = a[17];
+                document.getElementById("l24").innerHTML = a[22];
+                document.getElementById("l30").innerHTML = a[3];
+                document.getElementById("l31").innerHTML = a[8];
+                document.getElementById("l32").innerHTML = a[13];
+                document.getElementById("l33").innerHTML = a[18];
+                document.getElementById("l34").innerHTML = a[23];
+                document.getElementById("l40").innerHTML = a[4];
+                document.getElementById("l41").innerHTML = a[9];
+                document.getElementById("l42").innerHTML = a[14];
+                document.getElementById("l43").innerHTML = a[19];
+                document.getElementById("l44").innerHTML = a[24];
+                data = [[0,0,a[0]], [0,1,a[1]], [0,2,a[2]], [0,3,a[3]], [0,4,a[4]],
+                            [1,0,a[5]], [1,1,a[6]], [1,2,a[7]], [1,3,a[8]], [1,4,a[9]],
+                            [2,0,a[10]], [2,1,a[11]], [2,2,a[12]], [2,3,a[13]], [2,4,a[14]],
+                            [3,0,a[15]], [3,1,a[16]], [3,2,a[17]], [3,3,a[18]], [3,4,a[19]],
+                            [4,0,a[20]], [4,1,a[21]], [4,2,a[22]], [4,3,a[23]], [4,4,a[24]]];
+                option.series[0].data = data;
+                chart.setOption(option);
+            }
+
+        </script>
+    </body>
+</html>
