@@ -19,10 +19,6 @@
                     android:id="@+id/toolbarx_r_2"
                     app:showAsAction="never"
                     android:title="BTsearch"/>
-                <item
-                    android:id="@+id/toolbarx_r_3"
-                    app:showAsAction="never"
-                    android:title="BTconnect"/>
             </group>
         </menu>
     </item>

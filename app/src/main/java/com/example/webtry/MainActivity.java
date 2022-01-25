@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public readThread readthread;
     private Toast mToast;
     private String TAG = "";
+    public boolean isStop = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,36 +114,36 @@ public class MainActivity extends AppCompatActivity {
         /**
          * CountDownTimer 实现倒计时
          */
-        countDownTimer = new CountDownTimer(10000, 1000) {
-            // 定时，每过1秒执行一次
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // 获取随机数二维数组
-                a = randomA();
-//                Log.e(TAG, "onTick: " + a);
-                // 判断数组左右两边1的个数大小关系
-                positionstyle = judgepose(a);
-                // 绘制三维柱状图
-                showPlot();
-                // 如果右边的多
-                if(positionstyle == 1){
-                    textView.setText("center right");
-                // 如果左边的多
-                }else if(positionstyle == -1){
-                    textView.setText("center left");
-                // 如果一样多
-                }else{
-                    textView.setText("right");
-                }
-
-            }
-
-            // 定时结束后回调函数
-            @Override
-            public void onFinish() {
-                showPlot();
-            }
-        };
+//        countDownTimer = new CountDownTimer(10000, 1000) {
+//            // 定时，每过1秒执行一次
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                // 获取随机数二维数组
+//                a = randomA();
+////                Log.e(TAG, "onTick: " + a);
+//                // 判断数组左右两边1的个数大小关系
+//                positionstyle = judgepose(a);
+//                // 绘制三维柱状图
+//                showPlot();
+//                // 如果右边的多
+//                if(positionstyle == 1){
+//                    textView.setText("center right");
+//                // 如果左边的多
+//                }else if(positionstyle == -1){
+//                    textView.setText("center left");
+//                // 如果一样多
+//                }else{
+//                    textView.setText("right");
+//                }
+//
+//            }
+//
+//            // 定时结束后回调函数
+//            @Override
+//            public void onFinish() {
+//                showPlot();
+//            }
+//        };
 //        countDownTimer.start();
 
         mHandler = new Handler(){
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < result.length(); i++) {
                             digitList.add(Integer.parseInt(result.substring(i, i+1)));
                         }
-                        Log.e(TAG, "handleMessage: " + digitList);
+//                        Log.e(TAG, "handleMessage: " + digitList);
                         if (digitList.size() == 25){
                             a.clear();
                             a = digitList;
@@ -251,10 +252,6 @@ public class MainActivity extends AppCompatActivity {
             else{
                 Toast.makeText(this, "蓝牙尚未打开", Toast.LENGTH_SHORT).show();
             }
-            return true;
-        }
-        if (id == R.id.toolbarx_r_3){
-            Toast.makeText(this, "连接蓝牙", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -352,9 +349,12 @@ public class MainActivity extends AppCompatActivity {
 //        countDownTimer.start();
         // 获取activity_blue_tooth传入的数据
         if (device != null) {
-            readthread = new readThread();
-            bTclient.connectDevice(device);
-            bTclient.start();
+            if (!isStop) {
+                readthread = new readThread();
+                bTclient.connectDevice(device);
+                bTclient.start();
+                isStop = !isStop;
+            }
         }
         else {
             showToast("未连接蓝牙");
