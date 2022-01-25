@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">webTry</string>
     <string name="btn_1">执行js</string>
-    <string name="toolbar_title">Data acquisition and display system for sensor array</string>
-    <string name="toolbar_subtitle">Micro/Nano Electronic Devices Research Group</string>
+    <string name="toolbar_title">Data display system for sensors array</string>
+    <string name="toolbar_title_2">Visible Blue Tooth</string>
+    <string name="toolbar_subtitle">Micro/Nano Electronic Devices Research group</string>
 </resources>

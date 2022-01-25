@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/webTry/app/src/main/res/drawable/ic_launcher_background.xml" value="0.121875" />
+        <entry key="..\:/AndroidStudioProjects/webTry/app/src/main/res/layout/activity_blue_tooth.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/webTry/app/src/main/res/layout/activity_bluetooth.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/webTry/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/webTry/app/src/main/res/layout/list_item.xml" value="0.1234375" />
+        <entry key="..\:/AndroidStudioProjects/webTry/app/src/main/res/menu/toolbar.xml" value="0.1" />
       </map>
     </option>
   </component>
