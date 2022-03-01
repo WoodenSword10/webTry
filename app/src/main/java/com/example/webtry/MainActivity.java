@@ -1,14 +1,14 @@
 package com.example.webtry;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +20,7 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -30,8 +28,6 @@ import androidx.core.app.ActivityCompat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -44,31 +40,25 @@ public class MainActivity extends AppCompatActivity {
     // 存放随机数列表
     private ArrayList<Integer> a = new ArrayList<>();
     // 随机数
-    private Random r = new Random();
+    private final Random r = new Random();
     // webView控件
     private WebView webView;
-    // 定时器
-    private CountDownTimer countDownTimer;
-    // 文本显示框的获取
-    private TextView textView;
     // a二维数组的左右两边1总数的个数
     private int positionstyle;
-    // 自定义toolbar
-    private Toolbar toolbar;
     // 蓝牙控制器
     public BlueToothController btController = new BlueToothController();
-    private ArrayList<String> requestList = new ArrayList<>();
+    private final ArrayList<String> requestList = new ArrayList<>();
     // 蓝牙设备
     public BluetoothDevice device;
     // 蓝牙服务器
     public BluetoothSocket bluetoothSocket;
     public Handler mHandler;
-    private BTclient bTclient = new BTclient();
+    private final BTclient bTclient = new BTclient();
     public readThread readthread;
     private Toast mToast;
-    private String TAG = "";
     public boolean isStop = false;
 
+    @SuppressLint({"SetJavaScriptEnabled", "HandlerLeak"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +67,12 @@ public class MainActivity extends AppCompatActivity {
         // 获得webView控件
         webView = (WebView) findViewById(R.id.web_1);
         // 获取textView
-        textView = (TextView)findViewById(R.id.textView2);
+        // 定时器
+        // 文本显示框的获取
+        TextView textView = (TextView) findViewById(R.id.textView2);
         // 获取toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbarx);
+        // 自定义toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarx);
         // 关联菜单
         toolbar.inflateMenu(R.menu.toolbar);
         setSupportActionBar(toolbar);
@@ -111,10 +104,7 @@ public class MainActivity extends AppCompatActivity {
         // 绘制三维柱状图
         showPlot();
 
-        /**
-         * CountDownTimer 实现倒计时
-         */
-//        countDownTimer = new CountDownTimer(10000, 1000) {
+        //        countDownTimer = new CountDownTimer(10000, 1000) {
 //            // 定时，每过1秒执行一次
 //            @Override
 //            public void onTick(long millisUntilFinished) {
@@ -164,7 +154,18 @@ public class MainActivity extends AppCompatActivity {
                         if (digitList.size() == 25){
                             a.clear();
                             a = digitList;
+                            positionstyle = judgepose(a);
                             showPlot();
+                            // 如果右边的多
+                            if(positionstyle == 1){
+                                textView.setText("center right");
+                            // 如果左边的多
+                            }else if(positionstyle == -1){
+                                textView.setText("center left");
+                            // 如果一样多
+                            }else{
+                                textView.setText("right");
+                            }
                         }
                         break;
                     default:
@@ -308,15 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 right_add_one ++;
             }
         }
-        if(right_add_one > left_add_one){
-            return 1;
-        }
-        else if(right_add_one < left_add_one){
-            return -1;
-        }
-        else{
-            return 0;
-        }
+        return Integer.compare(right_add_one, left_add_one);
     }
 
     /**
@@ -386,7 +379,6 @@ public class MainActivity extends AppCompatActivity {
 
     //读取数据
     private class readThread extends Thread {
-        private static final String TAG = "";
 
         public void run() {
             super.run();
@@ -406,10 +398,7 @@ public class MainActivity extends AppCompatActivity {
                     if( (bytes = mmInStream.read(buffer)) > 0 )
                     {
                         byte[] buf_data = new byte[bytes];
-                        for(int i=0; i<bytes; i++)
-                        {
-                            buf_data[i] = buffer[i];
-                        }
+                        System.arraycopy(buffer, 0, buf_data, 0, bytes);
                         String s = new String(buf_data);//接收的值inputstream 为 s
 //                        Log.e(TAG, "run: " + s);
                         Message message = Message.obtain();

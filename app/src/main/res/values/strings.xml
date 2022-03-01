@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">webTry</string>
+    <string name="app_name">ArrayShow</string>
     <string name="btn_1">执行js</string>
     <string name="toolbar_title">Data display system for sensors array</string>
     <string name="toolbar_title_2">Visible Blue Tooth</string>
